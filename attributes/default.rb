@@ -78,8 +78,18 @@
                             "eucalyptus-load-balancer-image" => true,
                             "eucanetd" => true,
                             "load-balancer-servo" => true}
+# Eucalyptus Enterprise rpms
+['beachhead']['euca_enterprise_rpms']={}
+
+# VPC backend rpms
+['beachhead']['euca_backend_rpms']={}
+# Add backend specific rpms here:
+#['beachhead']['euca_backend_rpms']['midokura'] = false
+#['beachhead']['euca_backend_rpms']['riak'] = false
+#['beachhead']['euca_backend_rpms']['ceph'] = false
+
 # Extra yum packages to be downloaded into the local repo/archive
-['beachhead']['extra_rpms'] = {}
+['beachhead']['extra_rpms']={}
 
 
 
