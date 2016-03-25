@@ -1,8 +1,17 @@
-######################################################################################################################
+#####################################################################################################################
 # beachhead base attributes
 ######################################################################################################################
 ['beachhead']["user"] = 'eucalyptus'
 ['beachhead']["group"] = 'eucalyptus'
+
+######################################################################################################################
+# beachhead repos. Repos urls to be created locaally and used for creating archive/repo of deployment dependencies
+######################################################################################################################
+['beachhead']['repos']={
+    "enterprise-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/enterprise-devel/centos/6/x86_64/",
+    "euca2ools-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/euca2ools-devel/centos/6/x86_64/",
+    "eucalyptus-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/eucalyptus-devel/centos/6/x86_64/"
+}
 
 ######################################################################################################################
 # beachhead http server attributes
@@ -65,10 +74,8 @@
                             "eucalyptus-imaging-toolkit" => true,
                             "eucalyptus-imaging-worker" => true,
                             "eucalyptus-nc" => true,
-                            "eucalyptus-release-ci" => true,
                             "eucalyptus-sc" => true,
                             "eucalyptus-service-image" => true,
-                            "eucalyptus-service-image-release" => true,
                             "eucalyptus-sos-plugins" => true,
                             "eucalyptus-walrus" => true,
                             "calyptos" => true,
@@ -91,5 +98,9 @@
 # Extra yum packages to be downloaded into the local repo/archive
 ['beachhead']['extra_rpms']={}
 
-
+# Artifacts to be downloaded into the local repo/archive
+['beachhead']['download_urls'] = {
+    "default_img_url" => "http://images.objectstorage.cloud.qa1.eucalyptus-systems.com:8773/precise-server-cloudimg-amd64-disk1.img",
+    "init_script_url" => "http://git.qa1.eucalyptus-systems.com/qa-repos/eucalele/raw/master/deploy-helpers/scripts/network-interfaces.sh"
+}
 
