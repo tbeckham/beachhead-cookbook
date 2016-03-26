@@ -3,14 +3,19 @@
 # Recipe:: default
 #
 
-
-
-
 ### Create eucalyptus user
-user "eucalyptus" do
+beachhead_user = node['beachhead']["user"]
+beachhead_group = node['beachhead']["group"]
+
+user beachhead_user do
   supports :manage_home => true
-  comment "Eucalyptus User"
-  home "/home/eucalyptus"
+  comment "Eucalyptus BeachHead User"
+  home "/home/#{beachhead_user}"
   shell "/bin/bash"
 end
 
+group beachhead_group do
+  action :modify
+  members beachhead_user
+  append true
+end

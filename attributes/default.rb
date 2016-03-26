@@ -21,7 +21,10 @@
 ######################################################################################################################
 # beachhead dependency sandbox location used to store local packages
 ######################################################################################################################
-['beachhead']['dependency_sandbox_dir']="eucalyptus_dependencies.tar.gz"
+['beachhead']['dependency_sandbox_dir']="./beachhead_dependencies"
+['beachhead']['dependency_archive_name']="eucalyptus_dependencies.tar.gz"
+
+
 
 ######################################################################################################################
 # beachhead python environment
@@ -98,7 +101,9 @@
 # Extra yum packages to be downloaded into the local repo/archive
 ['beachhead']['extra_rpms']={}
 
-# Artifacts to be downloaded into the local repo/archive
+######################################################################################################################
+# Additional artifacts to be downloaded into the local repo/archive
+######################################################################################################################
 ['beachhead']['download_urls'] = {
     "default_img_url" => "http://images.objectstorage.cloud.qa1.eucalyptus-systems.com:8773/precise-server-cloudimg-amd64-disk1.img",
     "init_script_url" => "http://git.qa1.eucalyptus-systems.com/qa-repos/eucalele/raw/master/deploy-helpers/scripts/network-interfaces.sh"
