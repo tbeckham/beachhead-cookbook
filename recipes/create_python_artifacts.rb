@@ -5,6 +5,12 @@
 
 include_recipe "beachead::default"
 
+######################################################################################################################
+# Create python virtual env to include in dependency archive
+# Install all needed python modules into this env for portability, and including in the dependency beachhead archive.
+######################################################################################################################
+
+# Get the needed vars from the provided attributes
 extra_pip_hash = node['beachhead']['extra_pip_pkgs']
 python_git_hash = node['beachhead']['python_git_modules']
 beachhead_user = node['beachhead']["user"]
@@ -14,11 +20,6 @@ archive_name = node['beachhead']['dependency_archive_name']
 virt_env_path = File.join(sandbox_dir, "beachhead_virtualenv")
 virt_activate = File.join(virt_env_path, "bin/activate")
 
-######################################################################################################################
-# Create python virtual env to include in dependency archive
-# Install all needed python modules into this env for portability, and including in the dependency beachhead archive.
-######################################################################################################################
-
 # Create the virtual env
 python_virtualenv virt_env_path do
   # interpreter "python2.7"
@@ -26,7 +27,6 @@ python_virtualenv virt_env_path do
   group beachhead_group
   action :create
 end
-
 
 # Install any PIP packages specified into the virtual env
 extra_pip_hash.each do |pkgname, install|

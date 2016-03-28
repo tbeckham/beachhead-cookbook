@@ -6,6 +6,11 @@
 
 include_recipe "beachead::default"
 
+######################################################################################################################
+# Downloads all the specified RPMs into the provided sandbox directory for later including in the
+# beachhead archive.
+######################################################################################################################
+
 beachhead_user = node['beachhead']["user"]
 beachhead_group = node['beachhead']["group"]
 sandbox_dir = node['beachhead']['dependency_sandbox_dir']
@@ -45,7 +50,6 @@ package rpms do
   action :install
   options :"--nogpgcheck --downloadonly --downloaddir #{sandbox_dir}"
 end
-
 
 ######################################################################################################################
 # Create python virtual env to include in dependency archive
