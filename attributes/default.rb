@@ -32,15 +32,15 @@
 ######################################################################################################################
 
 ['beachhead']['python_git_modules'] = {
-      "calyptos" => {'git_url'=> "https://github.com/eucalyptus/calyptos.git",
+      "calyptos" => {'git_repo'=> "https://github.com/eucalyptus/calyptos.git",
                      'branch' => "master",
                      'update' => true
       },
-      "nephoria" => {'git_url'=> "https://github.com/nephomaniac/nephoria.git",
+      "nephoria" => {'git_repo'=> "https://github.com/nephomaniac/nephoria.git",
                      'branch' => "master",
                      'update' => true
       },
-      "adminapi" => {'git_url'=> "https://github.com/nephomaniac/adminapi.git",
+      "adminapi" => {'git_repo'=> "https://github.com/nephomaniac/adminapi.git",
                      'branch' => "master",
                      'update' => true
       },
