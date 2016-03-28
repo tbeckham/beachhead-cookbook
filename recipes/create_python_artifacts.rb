@@ -16,7 +16,6 @@ python_git_hash = node['beachhead']['python_git_modules']
 beachhead_user = node['beachhead']["user"]
 beachhead_group = node['beachhead']["group"]
 sandbox_dir = node['beachhead']['dependency_sandbox_dir']
-archive_name = node['beachhead']['dependency_archive_name']
 virt_env_path = File.join(sandbox_dir, "beachhead_virtualenv")
 virt_activate = File.join(virt_env_path, "bin/activate")
 
