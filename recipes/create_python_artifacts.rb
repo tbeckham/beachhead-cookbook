@@ -16,8 +16,10 @@ virt_activate = File.join(virt_env_path, "bin/activate")
 
 ######################################################################################################################
 # Create python virtual env to include in dependency archive
+# Install all needed python modules into this env for portability, and including in the dependency beachhead archive.
 ######################################################################################################################
 
+# Create the virtual env
 python_virtualenv virt_env_path do
   # interpreter "python2.7"
   owner beachhead_user
@@ -26,7 +28,7 @@ python_virtualenv virt_env_path do
 end
 
 
-# Install any PIP packages into the virtual env
+# Install any PIP packages specified into the virtual env
 extra_pip_hash.each do |pkgname, install|
   pkg_version = nil
   if install.is_a?(Boolean)
@@ -42,7 +44,8 @@ extra_pip_hash.each do |pkgname, install|
   end
 end
 
-# Create the local git repos in the sandbox dir
+# Create/update the local git repos, checkout specified branch in the sandbox dir.
+# Then Build/install the module into the virtual env
 python_git_hash.each do |modname, values|
   if values['update']
     git_action = 'sync'
