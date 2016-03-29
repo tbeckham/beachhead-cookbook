@@ -1,13 +1,13 @@
 #####################################################################################################################
 # beachhead base attributes
 ######################################################################################################################
-['beachhead']["user"] = 'eucalyptus'
-['beachhead']["group"] = 'eucalyptus'
+default['beachhead']["user"] = 'eucalyptus'
+default['beachhead']["group"] = 'eucalyptus'
 
 ######################################################################################################################
 # beachhead repos. Repos urls to be created locaally and used for creating archive/repo of deployment dependencies
 ######################################################################################################################
-['beachhead']['repos']={
+default['beachhead']['repos']={
     "enterprise-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/enterprise-devel/centos/6/x86_64/",
     "euca2ools-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/euca2ools-devel/centos/6/x86_64/",
     "eucalyptus-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/eucalyptus-devel/centos/6/x86_64/"
@@ -16,13 +16,13 @@
 ######################################################################################################################
 # beachhead http server attributes
 ######################################################################################################################
-['beachhead']["httpd"]["docroot"]='/var/www/eucabeachead/public_html'
+default['beachhead']["httpd"]["docroot"]='/var/www/eucabeachead/public_html'
 
 ######################################################################################################################
 # beachhead dependency sandbox location used to store local packages
 ######################################################################################################################
-['beachhead']['dependency_sandbox_dir']="./beachhead_dependencies"
-['beachhead']['dependency_archive_name']="eucalyptus_dependencies.tar.gz"
+default['beachhead']['dependency_sandbox_dir']="./beachhead_dependencies"
+default['beachhead']['dependency_archive_name']="eucalyptus_dependencies.tar.gz"
 
 
 
@@ -31,7 +31,7 @@
 #python modules to be installed into the python virtual environement
 ######################################################################################################################
 
-['beachhead']['python_git_modules'] = {
+default['beachhead']['python_git_modules'] = {
       "calyptos" => {'git_repo'=> "https://github.com/eucalyptus/calyptos.git",
                      'branch' => "master",
                      'update' => true
@@ -46,7 +46,7 @@
       },
 }
 # Extra python packages to be installed with pip into the virtual environment
-['beachhead']['extra_pip_pkgs']={"ipython" => true}
+default['beachhead']['extra_pip_pkgs']={"ipython" => true}
 
 ######################################################################################################################
 # beachhead rpms for building local repo and archive of Euca deployment packages
@@ -57,14 +57,14 @@
 #       "false": will not download this package
 ######################################################################################################################
 # Base yum packages to be downloaded into the local repo/archive
-['beachhead']['system_rpms']={"gcc" => true,
+default['beachhead']['system_rpms']={"gcc" => true,
                               "python-virtualenv"=> true,
                               "python-pip" => true,
                               "python-devel" => true,
                               "git" => true,
                               "python-setuptools" => true}
 # Euca specific yum packages to be downloaded into the local repo/archive
-['beachhead']['euca_rpms']={"eucalyptus" => "4.3.0" ,
+default['beachhead']['euca_rpms']={"eucalyptus" => "4.3.0" ,
                             "eucalyptus-admin-tool" => true,
                             "eucalyptus-axis2c-common" => true,
                             "eucalyptus-blockdev-utils" => true,
@@ -89,23 +89,22 @@
                             "eucanetd" => true,
                             "load-balancer-servo" => true}
 # Eucalyptus Enterprise rpms
-['beachhead']['euca_enterprise_rpms']={}
+default['beachhead']['euca_enterprise_rpms']={}
 
 # VPC backend rpms
-['beachhead']['euca_backend_rpms']={}
+default['beachhead']['euca_backend_rpms']={}
 # Add backend specific rpms here:
 #['beachhead']['euca_backend_rpms']['midokura'] = false
 #['beachhead']['euca_backend_rpms']['riak'] = false
 #['beachhead']['euca_backend_rpms']['ceph'] = false
 
 # Extra yum packages to be downloaded into the local repo/archive
-['beachhead']['extra_rpms']={}
+default['beachhead']['extra_rpms']={}
 
 ######################################################################################################################
 # Additional artifacts to be downloaded into the local repo/archive
 ######################################################################################################################
-['beachhead']['download_urls'] = {
+default['beachhead']['download_urls'] = {
     "default_img_url" => "http://images.objectstorage.cloud.qa1.eucalyptus-systems.com:8773/precise-server-cloudimg-amd64-disk1.img",
     "init_script_url" => "http://git.qa1.eucalyptus-systems.com/qa-repos/eucalele/raw/master/deploy-helpers/scripts/network-interfaces.sh"
 }
-
