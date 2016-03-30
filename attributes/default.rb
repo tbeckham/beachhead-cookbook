@@ -108,3 +108,11 @@ default['beachhead']['download_urls'] = {
     "default_img_url" => "http://images.objectstorage.cloud.qa1.eucalyptus-systems.com:8773/precise-server-cloudimg-amd64-disk1.img",
     "init_script_url" => "http://git.qa1.eucalyptus-systems.com/qa-repos/eucalele/raw/master/deploy-helpers/scripts/network-interfaces.sh"
 }
+
+######################################################################################################################
+# DNS Configuration
+######################################################################################################################
+default['bind']['config']['recursion'] = "yes"
+default['bind']['config']['dnssec-enable'] = "no"
+default['bind']['config']['dnssec-validation'] = "no"
+default['bind']['config']['dnssec-lookaside'] = "auto"
