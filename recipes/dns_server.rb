@@ -4,3 +4,8 @@
     flush_cache [:before]
   end
 end
+
+template "/etc/named.conf" do
+  source "named.conf.erb"
+  action :create
+end
