@@ -9,3 +9,19 @@ template "/etc/named.conf" do
   source "named.conf.erb"
   action :create
 end
+
+node['bind']['zones']['forward'].each do |zone|
+  template "/var/named/#{zone['file']}" do
+    source "namedzone.erb"
+    action :create
+    variables zone
+  end
+end
+
+node['bind']['zones']['reverse'].each do |zone|
+  template "/var/named/#{zone['file']}" do
+    source "namedzone.erb"
+    action :create
+    variables zone
+  end
+end
