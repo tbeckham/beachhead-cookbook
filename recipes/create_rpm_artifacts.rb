@@ -4,7 +4,7 @@
 #
 # Gather Eucalyptus deployment dependencies
 
-include_recipe "beachead::default"
+include_recipe "beachhead-cookbook::default"
 
 ######################################################################################################################
 # Downloads all the specified RPMs into the provided sandbox directory for later including in the
@@ -32,7 +32,7 @@ rpm_hash.merge(node['beachhead']['extra_rpms'])
 rpms = []
 rpm_hash.each do |pkgname, install|
   Chef::Log.info "RPM INFO:#{pkgname} ---> #{install}"
-  if install.is_a?(Boolean) or install.nil?
+  if [true, false].include?(install) or install.nil?
     # if the value is 'false' then this RPM is flagged to not download
     if not install
       next
@@ -48,7 +48,7 @@ end
 # download rpms into the sandbox dir
 package rpms do
   action :install
-  options :"--nogpgcheck --downloadonly --downloaddir #{sandbox_dir}"
+  options "--nogpgcheck --downloadonly --downloaddir #{sandbox_dir}"
 end
 
 ######################################################################################################################

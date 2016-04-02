@@ -21,7 +21,7 @@ default['beachhead']["httpd"]["docroot"]='/var/www/eucabeachead/public_html'
 ######################################################################################################################
 # beachhead dependency sandbox location used to store local packages
 ######################################################################################################################
-default['beachhead']['dependency_sandbox_dir']="./beachhead_dependencies"
+default['beachhead']['dependency_sandbox_dir']="/tmp/beachhead_dependencies"
 default['beachhead']['dependency_archive_name']="eucalyptus_dependencies.tar.gz"
 
 
@@ -46,7 +46,7 @@ default['beachhead']['python_git_modules'] = {
       },
 }
 # Extra python packages to be installed with pip into the virtual environment
-default['beachhead']['extra_pip_pkgs']={"ipython" => true}
+default['beachhead']['extra_pip_pkgs']={}
 
 ######################################################################################################################
 # beachhead rpms for building local repo and archive of Euca deployment packages
