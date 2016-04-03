@@ -7,6 +7,7 @@ default['beachhead']["group"] = 'eucalyptus'
 ######################################################################################################################
 # beachhead repos. Repos urls to be created locaally and used for creating archive/repo of deployment dependencies
 ######################################################################################################################
+default['beachhead']['add_epel'] = true
 default['beachhead']['repos']={
     "enterprise-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/enterprise-devel/centos/6/x86_64/",
     "euca2ools-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/euca2ools-devel/centos/6/x86_64/",
@@ -64,8 +65,8 @@ default['beachhead']['system_rpms']={"gcc" => true,
                               "git" => true,
                               "python-setuptools" => true}
 # Euca specific yum packages to be downloaded into the local repo/archive
-default['beachhead']['euca_rpms']={"eucalyptus" => "4.3.0" ,
-                            "eucalyptus-admin-tool" => true,
+default['beachhead']['euca_rpms']={"eucalyptus" => ">= 4.3.0" ,
+                            "eucalyptus-admin-tools" => true,
                             "eucalyptus-axis2c-common" => true,
                             "eucalyptus-blockdev-utils" => true,
                             "eucalyptus-cc" => true,
@@ -83,7 +84,7 @@ default['beachhead']['euca_rpms']={"eucalyptus" => "4.3.0" ,
                             "eucalyptus-walrus" => true,
                             "calyptos" => true,
                             "euca-deploy" => true,
-                            "euca2ools" => "3.3.0",
+                            "euca2ools" => "= 3.3.0",
                             "eucaconsole" => true,
                             "eucalyptus-load-balancer-image" => true,
                             "eucanetd" => true,
