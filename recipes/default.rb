@@ -7,6 +7,7 @@
 beachhead_user = node['beachhead']["user"]
 beachhead_group = node['beachhead']["group"]
 sandbox_dir = node['beachhead']['dependency_sandbox_dir']
+archive_name = node['beachhead']['dependency_archive_name']
 archive_path = File.join(sandbox_dir, archive_name)
 
 
