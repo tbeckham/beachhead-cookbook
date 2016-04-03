@@ -3,7 +3,7 @@
 # Recipe:: create_python_artifacts
 # Used to create the virtual env for deployment and testing tools
 
-include_recipe "beachead::default"
+include_recipe "beachhead-cookbook::default"
 
 ######################################################################################################################
 # Create python virtual env to include in dependency archive
@@ -19,7 +19,14 @@ sandbox_dir = node['beachhead']['dependency_sandbox_dir']
 virt_env_path = File.join(sandbox_dir, "beachhead_virtualenv")
 virt_activate = File.join(virt_env_path, "bin/activate")
 
+Chef::Log.info "Making sure python-virtualenv package is installed..."
+yum_package "python-virtualenv" do
+  action :install
+end
+
+
 # Create the virtual env
+Chef::Log.info "Attempting to create the python virtual environment"
 python_virtualenv virt_env_path do
   # interpreter "python2.7"
   owner beachhead_user
@@ -30,14 +37,15 @@ end
 # Install any PIP packages specified into the virtual env
 extra_pip_hash.each do |pkgname, install|
   pkg_version = nil
-  if install.is_a?(Boolean)
+  if [true, false].include?(install)
     if not install
       next
     end
   else
     pkg_version = install
   end
-  python_pip key do
+  Chef::Log.info "Attempting to pip install: #{pkgname}"
+  python_pip pkgname do
     virtualenv virt_env_path
     version pkg_version
   end
@@ -52,14 +60,17 @@ python_git_hash.each do |modname, values|
     git_action = 'nothing'
   end
   local_gitdir = File.join(sandbox_dir, modname)
+  Chef::Log.info "Creating/updating git module #{modname}, branch:#{values['branch']}"
   git modname do
     user beachhead_user
     group beachhead_group
     destination local_gitdir
-    checkout_branch values['branch']
+    # checkout_branch values['branch']
+    revision values['branch']
     action git_action
     repository values['git_repo']
   end
+  Chef::Log.info "Installing module into virtual env:#{modname}"
   bash "install_python_source_#{modname}" do
     user beachhead_user
     cwd sandbox_dir

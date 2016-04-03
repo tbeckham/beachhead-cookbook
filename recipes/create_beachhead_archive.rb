@@ -3,9 +3,9 @@
 # Recipe:: create_beachhead_archive
 # Used to create the virtual env for deployment and testing tools
 
-include_recipe "beachead::default"
-include_recipe "create_python_artifacts"
-include_recipe "create_rpm_artifacts"
+include_recipe "beachhead-cookbook::default"
+include_recipe "beachhead-cookbook::create_python_artifacts"
+include_recipe "beachhead-cookbook::create_rpm_artifacts"
 
 ######################################################################################################################
 # Creates a zipped tar archive containing the Eucalyptus Beach Head dependencies used to deploy and manage Eucalyptus
@@ -19,6 +19,7 @@ yum_package "tar" do
   action :install
 end
 
+Chef::Log.info "Attempting to create tarball of dependencies: tar -cvzf #{archive_path} #{sandbox_dir}"
 execute 'Create Tar File' do
   command "tar -cvzf #{archive_path} #{sandbox_dir}"
 end
