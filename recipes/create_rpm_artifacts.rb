@@ -13,10 +13,17 @@ include_recipe "beachhead-cookbook::default"
 
 beachhead_user = node['beachhead']["user"]
 beachhead_group = node['beachhead']["group"]
-sandbox_dir = File.join(node['beachhead']['dependency_sandbox_dir'], 'rpms')
-archive_name = node['beachhead']['dependency_archive_name']
-archive_path = File.join(sandbox_dir, archive_name)
+sandbox_dir = node['beachhead']['dependency_sandbox_dir']
+rpm_subdir = File.join(sandbox_dir, node['beachhead']['rpm_subdir'])
 yum_repo_hash = node['beachhead']['repos']
+
+
+directory rpm_subdir do
+  owner beachhead_user
+  group beachhead_group
+  action :create
+  recursive true
+end
 
 ######################################################################################################################
 ## Add the yum repos 
@@ -46,7 +53,7 @@ rpm_hash.merge(node['beachhead']['system_rpms'])
 rpm_hash.merge(node['beachhead']['euca_enterprise_rpms'])
 rpm_hash.merge(node['beachhead']['euca_backend_rpms'])
 rpm_hash.merge(node['beachhead']['extra_rpms'])
-yum_options = "--nogpgcheck --downloadonly --downloaddir #{sandbox_dir}"
+yum_options = "--nogpgcheck --downloadonly --downloaddir #{rpm_subdir}"
 
 # Iterate over rpm hash where key is the RPM's name and
 # value is either true, false, or a version string.
@@ -68,13 +75,4 @@ rpm_hash.each do |pkgname, install|
     options yum_options
   end
 end
-
-# download rpms into the sandbox dir
-#package rpms do
-#  action :install
-#end
-
-######################################################################################################################
-# Create python virtual env to include in dependency archive
-######################################################################################################################
 

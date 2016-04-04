@@ -16,14 +16,22 @@ python_git_hash = node['beachhead']['python_git_modules']
 beachhead_user = node['beachhead']["user"]
 beachhead_group = node['beachhead']["group"]
 sandbox_dir = node['beachhead']['dependency_sandbox_dir']
-virt_env_path = File.join(sandbox_dir, "beachhead_virtualenv")
+python_subdir =  File.join(sandbox_dir, node['beachhead']['python_subdir'])
+virt_env_path = File.join(python_subdir, "beachhead_virtualenv")
 virt_activate = File.join(virt_env_path, "bin/activate")
+
+directory python_subdir do
+  owner beachhead_user
+  group beachhead_group
+  action :create
+  recursive true
+end
+
 
 Chef::Log.info "Making sure python-virtualenv package is installed..."
 yum_package "python-virtualenv" do
   action :install
 end
-
 
 # Create the virtual env
 Chef::Log.info "Attempting to create the python virtual environment"
@@ -59,7 +67,7 @@ python_git_hash.each do |modname, values|
   else
     git_action = 'nothing'
   end
-  local_gitdir = File.join(sandbox_dir, modname)
+  local_gitdir = File.join(python_subdir, modname)
   Chef::Log.info "Creating/updating git module #{modname}, branch:#{values['branch']}"
   git modname do
     user beachhead_user

@@ -21,6 +21,6 @@ end
 
 Chef::Log.info "Attempting to create tarball of dependencies: tar -cvzf #{archive_path} #{sandbox_dir}"
 execute 'Create Tar File' do
-  command "tar -cvzf #{archive_path} #{sandbox_dir}"
+  command "cd #{sandbox_dir} && tar -cvzf #{archive_path} --exclude #{archive_name} *"
 end
 

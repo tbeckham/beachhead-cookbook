@@ -25,13 +25,14 @@ default['beachhead']["httpd"]["docroot"]='/var/www/eucabeachead/public_html'
 default['beachhead']['dependency_sandbox_dir']="/tmp/beachhead_dependencies"
 default['beachhead']['dependency_archive_name']="eucalyptus_dependencies.tar.gz"
 
-
-
 ######################################################################################################################
 # beachhead python environment
 #python modules to be installed into the python virtual environement
 ######################################################################################################################
+# Sub dir within the dependency dir for python dependency artifiacts 
+default['beachhead']['python_subdir']="python"
 
+#Python git modules
 default['beachhead']['python_git_modules'] = {
       "calyptos" => {'git_repo'=> "https://github.com/eucalyptus/calyptos.git",
                      'branch' => "master",
@@ -57,6 +58,9 @@ default['beachhead']['extra_pip_pkgs']={}
 #       "true": will attempt to download that package name w/o regard for version
 #       "false": will not download this package
 ######################################################################################################################
+# Sub dir within the dependency dir for python dependency artifiacts 
+default['beachhead']['rpm_subdir']="rpms"
+
 # Base yum packages to be downloaded into the local repo/archive
 default['beachhead']['system_rpms']={"gcc" => true,
                               "python-virtualenv"=> true,
