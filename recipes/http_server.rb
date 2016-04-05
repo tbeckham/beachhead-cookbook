@@ -9,6 +9,9 @@ doc_root =  node['beachhead']["httpd"]["docroot"]
 pageowner =  node['beachhead']["owner"]
 pagegroup =  node['beachhead']["group"]
 homepage = File.join(doc_root, 'index.html')
+sandbox_dir = node['beachhead']['dependency_sandbox_dir']
+sand_box_link = File.join(doc_root, "beachhead")
+
 
 
 httpd_service 'euca_beach_head' do
@@ -34,4 +37,8 @@ file homepage do
   mode '0644'
   owner pageowner
   group pagegroup
+end
+
+link sand_box_link do
+  to sandbox_dir
 end
