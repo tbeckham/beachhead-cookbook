@@ -76,3 +76,15 @@ rpm_hash.each do |pkgname, install|
   end
 end
 
+package "createrepo" do
+  action :install
+end
+
+bash "create_repo_data" do
+  user beachhead_user
+  cwd rpm_subdir
+  code <<-EOH
+    createrepo --database #{rpm_subdir}  
+  EOH
+end
+
