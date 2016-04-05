@@ -3,24 +3,24 @@
 # Recipe:: http_server
 #
 
-include_recipe "beachead::default"
+include_recipe "beachhead-cookbook::default"
 
 doc_root =  node['beachhead']["httpd"]["docroot"]
 pageowner =  node['beachhead']["owner"]
 pagegroup =  node['beachhead']["group"]
-homepage = doc_root.concat('index.html')
+homepage = File.join(doc_root, 'index.html')
 
 
-httpd_service 'eucabeachhead' do
+httpd_service 'euca_beach_head' do
   mpm 'prefork'
   action [:create, :start]
 end
 
 # Add the site configuration.
-httpd_config 'eucabeachead' do
-  instance 'eucabeachead'
-  source 'eucabeachead.conf.erb'
-  notifies :restart, 'httpd_service[eucabeachead]'
+httpd_config 'euca_beach_head' do
+  instance 'euca_beach_head'
+  source 'euca_beach_head_web.conf.erb'
+  notifies :restart, 'httpd_service[euca_beach_head]'
 end
 
 # Create the document root directory.
