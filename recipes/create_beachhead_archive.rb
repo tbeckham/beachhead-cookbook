@@ -14,6 +14,17 @@ include_recipe "beachhead-cookbook::create_rpm_artifacts"
 sandbox_dir = node['beachhead']['dependency_sandbox_dir']
 archive_name = node['beachhead']['dependency_archive_name']
 archive_path = File.join(sandbox_dir, archive_name)
+rpm_subdir = node['beachhead']['rpm_subdir']
+python_subdir = node['beachhead']['python_subdir']
+metadata_path = File.join(sandbox_dir, 'beachhead_metadata')
+
+template metadata_path do
+  source "beachhead_metadata.erb"
+  action :create
+  variables({ :python_subdir => python_subdir,
+              :rpm_subdir => rpm_subdir 
+  })
+end
 
 yum_package "tar" do
   action :install
