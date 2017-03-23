@@ -13,6 +13,11 @@ e.g.
 #### packages
 - `toaster` - beachhead-cookbook needs toaster to brown your bagel.
 
+Installation
+------------
+    yum install python-setuptools gcc python-devel git libffi-devel openssl-devel readline-devel patch
+
+
 Attributes
 ----------
 TODO: List your cookbook attributes here.

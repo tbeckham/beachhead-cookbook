@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: beachhead-cookbook
-# Recipe:: gather_dependencies
+# Recipe:: create_rpm_artifacts
 #
 # Gather Eucalyptus deployment dependencies
 
@@ -32,6 +32,7 @@ end
 if node['beachhead']['add_epel']
   package 'epel-release' do
     action :install
+    not_if { "rpm -qa | grep epel-release" }
   end
 end
 
@@ -42,6 +43,7 @@ yum_repo_hash.each do |reponame, repo_url|
     url repo_url
     gpgcheck false
     metadata_expire "1"
+    not_if { "rpm -qa | grep #{reponame}" }
   end
 end
 
@@ -76,15 +78,15 @@ rpm_hash.each do |pkgname, install|
   end
 end
 
-package "createrepo" do
+package node['createrepo_pkg'] do
   action :install
 end
 
+cmd = node['createrepo_pkg']
 bash "create_repo_data" do
   user beachhead_user
   cwd rpm_subdir
   code <<-EOH
-    createrepo --database #{rpm_subdir}  
+    #{cmd} --database #{rpm_subdir}  
   EOH
 end
-
