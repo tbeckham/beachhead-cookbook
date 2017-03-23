@@ -31,6 +31,7 @@ end
 Chef::Log.info "Making sure python-virtualenv package is installed..."
 yum_package "python-virtualenv" do
   action :install
+  not_if { "rpm -qa | grep python-virtualenv"}
 end
 
 # Create the virtual env
@@ -88,7 +89,3 @@ python_git_hash.each do |modname, values|
     EOH
   end
 end
-
-
-
-

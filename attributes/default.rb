@@ -5,13 +5,13 @@ default['beachhead']["user"] = 'eucalyptus'
 default['beachhead']["group"] = 'eucalyptus'
 
 ######################################################################################################################
-# beachhead repos. Repos urls to be created locaally and used for creating archive/repo of deployment dependencies
+# beachhead repos. Repos urls to be created locally and used for creating archive/repo of deployment dependencies
 ######################################################################################################################
 default['beachhead']['add_epel'] = true
 default['beachhead']['repos']={
-    "enterprise-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/enterprise-devel/centos/6/x86_64/",
-    "euca2ools-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/euca2ools-devel/centos/6/x86_64/",
-    "eucalyptus-repo" => "http://packages.release.eucalyptus-systems.com/yum/tags/eucalyptus-devel/centos/6/x86_64/"
+    "enterprise-repo" => "http://builds.qa1.eucalyptus-systems.com/packages/tags/enterprise-devel/rhel/7/x86_64/",
+    "euca2ools-repo" => "http://builds.qa1.eucalyptus-systems.com/packages/tags/euca2ools-devel/rhel/7/x86_64/",
+    "eucalyptus-repo" => "http://builds.qa1.eucalyptus-systems.com/packages/tags/eucalyptus-devel/rhel/7/x86_64/"
 }
 
 ######################################################################################################################
@@ -23,7 +23,10 @@ default['beachhead']["httpd"]["docroot"]='/var/www/eucabeachead/public_html'
 # beachhead dependency sandbox location used to store local packages
 ######################################################################################################################
 default['beachhead']['dependency_sandbox_dir']="/tmp/beachhead_dependencies"
-default['beachhead']['dependency_archive_name']="eucalyptus_dependencies.tar.gz"
+default['beachhead']['dependency_archive_name']="eucalyptus_dependencies.tar.xz"
+
+# Should we overwrite dependencies in dependency_sandbox_dir?  Default: false
+default['beachhead']['always_overwrite_dependencies'] = false
 
 ######################################################################################################################
 # beachhead python environment
@@ -38,11 +41,11 @@ default['beachhead']['python_git_modules'] = {
                      'branch' => "master",
                      'update' => true
       },
-      "nephoria" => {'git_repo'=> "https://github.com/nephomaniac/nephoria.git",
+      "nephoria" => {'git_repo'=> "https://github.com/eucalyptus/nephoria.git",
                      'branch' => "master",
                      'update' => true
       },
-      "adminapi" => {'git_repo'=> "https://github.com/nephomaniac/adminapi.git",
+      "adminapi" => {'git_repo'=> "https://github.com/eucalyptus/adminapi.git",
                      'branch' => "master",
                      'update' => true
       },
@@ -63,13 +66,17 @@ default['beachhead']['rpm_subdir']="rpms"
 
 # Base yum packages to be downloaded into the local repo/archive
 default['beachhead']['system_rpms']={"gcc" => true,
+                              "git" => true,
+                              "libffi-devel" => true,
+                              "openssl-devel" => true,
+                              "patch" => true,
                               "python-virtualenv"=> true,
                               "python-pip" => true,
                               "python-devel" => true,
-                              "git" => true,
-                              "python-setuptools" => true}
+                              "python-setuptools" => true,
+                              "readline-devel" => true}
 # Euca specific yum packages to be downloaded into the local repo/archive
-default['beachhead']['euca_rpms']={"eucalyptus" => ">= 4.3.0" ,
+default['beachhead']['euca_rpms']={"eucalyptus" => ">= 4.4.0" ,
                             "eucalyptus-admin-tools" => true,
                             "eucalyptus-axis2c-common" => true,
                             "eucalyptus-blockdev-utils" => true,
@@ -77,20 +84,18 @@ default['beachhead']['euca_rpms']={"eucalyptus" => ">= 4.3.0" ,
                             "eucalyptus-cloud" => true,
                             "eucalyptus-common-java" => true,
                             "eucalyptus-common-java-libs" => true,
-                            "eucalyptus-database-server" => true,
                             "eucalyptus-debuginfo" => true,
                             "eucalyptus-imaging-toolkit" => true,
                             "eucalyptus-imaging-worker" => true,
                             "eucalyptus-nc" => true,
                             "eucalyptus-sc" => true,
                             "eucalyptus-service-image" => true,
+                            "eucalyptus-selinux" => true,
                             "eucalyptus-sos-plugins" => true,
                             "eucalyptus-walrus" => true,
-                            "calyptos" => true,
-                            "euca-deploy" => true,
-                            "euca2ools" => "= 3.3.0",
+                            "euca2ools" => "= 3.4.0",
                             "eucaconsole" => true,
-                            "eucalyptus-load-balancer-image" => true,
+                            "eucaconsole-selinux" => true,
                             "eucanetd" => true,
                             "load-balancer-servo" => true}
 # Eucalyptus Enterprise rpms
@@ -104,7 +109,12 @@ default['beachhead']['euca_backend_rpms']={}
 #['beachhead']['euca_backend_rpms']['ceph'] = false
 
 # Extra yum packages to be downloaded into the local repo/archive
-default['beachhead']['extra_rpms']={}
+default['beachhead']['extra_rpms']={
+  "qemu-img-ev"  => true,
+  "qemu-kvm-common-ev"  => true,
+  "qemu-kvm-ev"  => true,
+  "qemu-kvm-tools-ev"  => true
+}
 
 ######################################################################################################################
 # Additional artifacts to be downloaded into the local repo/archive
@@ -121,3 +131,6 @@ default['bind']['config']['recursion'] = "yes"
 default['bind']['config']['dnssec-enable'] = "no"
 default['bind']['config']['dnssec-validation'] = "no"
 default['bind']['config']['dnssec-lookaside'] = "auto"
+
+# createrepo package can be specified here, default is createrepo_c
+default['createrepo_pkg'] = "createrepo_c"

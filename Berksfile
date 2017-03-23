@@ -1,4 +1,6 @@
 source "https://supermarket.chef.io"
+
+metadata
 cookbook 'yum-epel'
 cookbook 'bind', '= 0.0.7'
 cookbook 'apache2', '~> 3.1.0'
