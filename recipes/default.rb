@@ -49,5 +49,6 @@ else
     group "#{name}"
     mode '0755'
     action :create
+    not_if { ls -l "#{sandbox_dir}"}
   end
 end
