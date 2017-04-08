@@ -23,6 +23,7 @@ directory rpm_subdir do
   group beachhead_group
   action :create
   recursive true
+  not_if { "ls -l #{rpm_subdir}" }
 end
 
 ######################################################################################################################

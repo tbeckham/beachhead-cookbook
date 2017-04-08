@@ -25,6 +25,7 @@ directory python_subdir do
   group beachhead_group
   action :create
   recursive true
+  not_if { "ls -l #{python_subdir}" }
 end
 
 
