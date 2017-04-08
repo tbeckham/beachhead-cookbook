@@ -42,6 +42,7 @@ python_virtualenv virt_env_path do
   owner beachhead_user
   group beachhead_group
   action :create
+  not_if { "ls -l #{virt_env_path}" }
 end
 
 # Install any PIP packages specified into the virtual env

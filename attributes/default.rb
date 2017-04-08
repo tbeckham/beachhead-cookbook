@@ -1,8 +1,8 @@
 #####################################################################################################################
 # beachhead base attributes
 ######################################################################################################################
-default['beachhead']["user"] = 'eucalyptus'
-default['beachhead']["group"] = 'eucalyptus'
+default['beachhead']["user"] = "eucalyptus"
+default['beachhead']["group"] = "eucalyptus"
 
 ######################################################################################################################
 # beachhead repos. Repos urls to be created locally and used for creating archive/repo of deployment dependencies
