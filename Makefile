@@ -20,7 +20,7 @@ distclean:
 
 rpmbuild: clean berkspkg
 	chef-client -z -r bc.tgz -o "recipe[beachhead-cookbook::create_beachhead_archive]"
-	#rpmbuild --define '_sourcedir /tmp/beachhead_dependencies/' -bs beachhead.spec
+	#rpmbuild --define '_sourcedir /tmp/beachhead_dependencies/' --define '_srcrpmdir .' -bs beachhead.spec
 	#mock --no-cleanup-after --resultdir=. -r ../rhel-7-x86_64.cfg rebuild /root/rpmbuild/SRPMS/eucalyptus-beachhead-0.1.0-0.el7.centos.src.rpm
 
 seddeps:

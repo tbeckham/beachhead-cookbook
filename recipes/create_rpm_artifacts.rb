@@ -23,7 +23,7 @@ directory rpm_subdir do
   group beachhead_group
   action :create
   recursive true
-  not_if { "ls -l #{rpm_subdir}" }
+  not_if { ::File.exist? "#{rpm_subdir}" }
 end
 
 ######################################################################################################################
@@ -37,14 +37,36 @@ if node['beachhead']['add_epel']
   end
 end
 
+username = Mixlib::ShellOut.new("whoami")
+username.run_command
+name = username.stdout.strip
+
+yumdownloader_all_repos = String.new
+
 yum_repo_hash.each do |reponame, repo_url|
-  yum_repository reponame do
-    action :create
-    description "#{reponame} Package Repo"
-    url repo_url
-    gpgcheck false
-    metadata_expire "1"
-    not_if { "rpm -qa | grep #{reponame}" }
+  if !node['beachhead']['alt-yum-config-location']
+    yumdownloader_all_repos = "#{yumdownloader_all_repos}" + " -c /etc/yum.repos.d/#{reponame}.repo"
+    yum_repository reponame do
+      action :create
+      description "#{reponame} Package Repo"
+      url repo_url
+      gpgcheck false
+      metadata_expire "1"
+      not_if { "rpm -qa | grep #{reponame}" }
+    end
+  else
+    repodir = node['beachhead']['alt-yum-dir']
+    yumdownloader_all_repos = "#{yumdownloader_all_repos}" + " -c #{repodir}/#{reponame}.repo"
+    node.override['beachhead']["user"] = name
+    node.override['beachhead']["group"] = name
+    repopath = node['beachhead']['alt-yum-dir']
+    template "#{repopath}/#{reponame}.repo" do
+      source "#{reponame}.repo.erb"
+      action :create
+      variables( :repourl => "#{repo_url}" )
+      owner "#{name}"
+      group "#{name}"
+    end
   end
 end
 
@@ -57,6 +79,10 @@ rpm_hash.merge(node['beachhead']['euca_enterprise_rpms'])
 rpm_hash.merge(node['beachhead']['euca_backend_rpms'])
 rpm_hash.merge(node['beachhead']['extra_rpms'])
 yum_options = "--nogpgcheck --downloadonly --downloaddir #{rpm_subdir}"
+
+# TODO: MBACCHI Make this work with yumdownloader
+# borrowed command from eucalyptus-service-image:
+# yumdownloader --resolve -c /tmp/yum-tmp.conf --destdir /var/lib/eucalyptus-service-image/packages eucalyptus-imaging-worker load-balancer-servo euca2ools
 
 # Iterate over rpm hash where key is the RPM's name and
 # value is either true, false, or a version string.
@@ -71,11 +97,27 @@ rpm_hash.each do |pkgname, install|
     # Add this RPM to list to be downloaded
   elsif install.is_a?(String)
     # Treat the string as a version and append to the package name
-    pkgname = "#{pkgname} #{install}"
+    if node['beachhead']['use-yumdownloader']
+      pkgname = "#{pkgname}-#{install}"
+    else
+      pkgname = "#{pkgname} #{install}"
+    end
   end
-  package pkgname do
-    action :install
-    options yum_options
+  if node['beachhead']['use-yumdownloader']
+    if node['beachhead']['alt-yum-config-location']
+      execute "yumdownloader #{pkgname}" do
+        command "yumdownloader --resolve #{yumdownloader_all_repos} --destdir #{rpm_subdir} #{pkgname}"
+      end
+    else
+      execute "yumdownloader #{pkgname}" do
+        command "yumdownloader --resolve --destdir #{rpm_subdir} #{pkgname}"
+      end
+    end
+  else
+    package pkgname do
+      action :install
+      options yum_options
+    end
   end
 end
 

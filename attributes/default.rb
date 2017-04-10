@@ -13,6 +13,13 @@ default['beachhead']['repos']={
     "euca2ools-repo" => "http://builds.qa1.eucalyptus-systems.com/packages/tags/euca2ools-devel/rhel/7/x86_64/",
     "eucalyptus-repo" => "http://builds.qa1.eucalyptus-systems.com/packages/tags/eucalyptus-devel/rhel/7/x86_64/"
 }
+# This is used to control whether the yum repo config files
+# will be placed in the standard /etc/yum.repos.d or /tmp (default /tmp)
+default['beachhead']['alt-yum-config-location'] = true
+default['beachhead']["alt-yum-dir"] = "/tmp"
+
+# Default to using yumdownloader vs. yum with the --downloadonly argument
+default['beachhead']['use-yumdownloader'] = true
 
 ######################################################################################################################
 # beachhead http server attributes
@@ -76,7 +83,7 @@ default['beachhead']['system_rpms']={"gcc" => true,
                               "python-setuptools" => true,
                               "readline-devel" => true}
 # Euca specific yum packages to be downloaded into the local repo/archive
-default['beachhead']['euca_rpms']={"eucalyptus" => ">= 4.4.0" ,
+default['beachhead']['euca_rpms']={"eucalyptus" => "4.4.0" ,
                             "eucalyptus-admin-tools" => true,
                             "eucalyptus-axis2c-common" => true,
                             "eucalyptus-blockdev-utils" => true,
@@ -93,7 +100,7 @@ default['beachhead']['euca_rpms']={"eucalyptus" => ">= 4.4.0" ,
                             "eucalyptus-selinux" => true,
                             "eucalyptus-sos-plugins" => true,
                             "eucalyptus-walrus" => true,
-                            "euca2ools" => "= 3.4.0",
+                            "euca2ools" => "3.4.0",
                             "eucaconsole" => true,
                             "eucaconsole-selinux" => true,
                             "eucanetd" => true,
