@@ -25,6 +25,7 @@ directory python_subdir do
   group beachhead_group
   action :create
   recursive true
+  not_if { ::File.exist? "#{python_subdir}" }
 end
 
 
@@ -41,6 +42,7 @@ python_virtualenv virt_env_path do
   owner beachhead_user
   group beachhead_group
   action :create
+  not_if { ::File.exist? "#{virt_env_path}" }
 end
 
 # Install any PIP packages specified into the virtual env
