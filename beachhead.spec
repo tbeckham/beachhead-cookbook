@@ -9,10 +9,13 @@ URL:           http://www.eucalyptus.com
 
 BuildRequires: python-devel
 BuildRequires: python-setuptools
+BuildRequires: tar
+BuildRequires: xz
 
 Requires: httpd
 
 Source0: /tmp/beachhead_dependencies/eucalyptus_dependencies.tar.xz
+Source1: beachhead-repo.conf
 
 %description
 
@@ -21,12 +24,15 @@ all components required to install Eucalyptus in your environment
 with ZERO internet connectivity.
 
 %install
-mkdir -p %{buildroot}/tmp/beachhead_dependencies/
-install -p -m 755 %{SOURCE0} %{buildroot}/tmp/beachhead_dependencies/
+mkdir -p %{buildroot}/var/www/html/beachhead_dependencies/
+mkdir -p %{buildroot}/etc/httpd/conf.d/
+tar -C %{buildroot}/var/www/html/beachhead_dependencies/ -xJvf %{SOURCE0} > /dev/null 2>&1
+install -p -m 644 %{SOURCE1} %{buildroot}/etc/httpd/conf.d/beachhead-repo.conf
 
 %files
 %defattr(755,root,root,755)
-%attr(-,root,root) /tmp/beachhead_dependencies/eucalyptus_dependencies.tar.xz
+%attr(-,root,root) /etc/httpd/conf.d/beachhead-repo.conf
+%attr(-,root,root) /var/www/html/beachhead_dependencies/
 
 %pre
 touch /etc/yum.repos.d/beachhead.repo
@@ -35,16 +41,9 @@ echo "name=beachhead-repo" >> /etc/yum.repos.d/beachhead.repo
 echo "baseurl=http://localhost/beachhead_dependencies/rpms/" >> /etc/yum.repos.d/beachhead.repo
 echo "enabled=1" >> /etc/yum.repos.d/beachhead.repo
 echo "gpgcheck=0" >> /etc/yum.repos.d/beachhead.repo
-touch /etc/httpd/conf.d/beachhead-repo.conf
-echo "<Directory \"/var/www/html/beachhead_dependencies/rpms\">" >> /etc/httpd/conf.d/beachhead-repo.conf
-echo "Options +Indexes" >> /etc/httpd/conf.d/beachhead-repo.conf
-echo "</Directory>" >> /etc/httpd/conf.d/beachhead-repo.conf
 exit 0
 
 %post
-tar -C /tmp/beachhead_dependencies/ -xJvf /tmp/beachhead_dependencies/eucalyptus_dependencies.tar.xz > /dev/null 2>&1
-mv /tmp/beachhead_dependencies /var/www/html/
-chown -R apache:apache /var/www/html/beachhead_dependencies/
 systemctl start httpd > /dev/null 2>&1
 exit 0
 

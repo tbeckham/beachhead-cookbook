@@ -54,3 +54,11 @@ else
     not_if { ::File.exist? "#{sandbox_dir}" }
   end
 end
+
+cookbook_file "#{sandbox_dir}/beachhead-repo.conf" do
+  source 'beachhead-repo-httpd.conf'
+  owner "#{name}"
+  group "#{name}"
+  mode '0644'
+  action :create
+end
