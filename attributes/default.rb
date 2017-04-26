@@ -56,6 +56,10 @@ default['beachhead']['python_git_modules'] = {
                      'branch' => "master",
                      'update' => true
       },
+      "n4j" => {'git_repo'=> "https://github.com/eucalyptus/n4j.git",
+                     'branch' => "master",
+                     'update' => true
+      },
 }
 # Extra python packages to be installed with pip into the virtual environment
 default['beachhead']['extra_pip_pkgs']={}
